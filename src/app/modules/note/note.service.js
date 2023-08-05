@@ -15,3 +15,9 @@ exports.createNote = async (req) => {
 
   return note;
 };
+
+exports.getNote = async (req) => {
+  const note = await Note.find({ user: req.user.id });
+
+  return note;
+};
