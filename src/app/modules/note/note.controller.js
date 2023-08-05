@@ -1,5 +1,10 @@
 const asyncHandler = require("express-async-handler");
-const { createNote, getNote, upadateNote } = require("./note.service");
+const {
+  createNote,
+  getNote,
+  upadateNote,
+  deleteNote,
+} = require("./note.service");
 
 exports.createNoteFromDb = asyncHandler(async (req, res) => {
   // const { ...data } = req.body;
@@ -45,5 +50,20 @@ exports.updateNoteFromDb = asyncHandler(async (req, res) => {
   } else {
     res.status(400);
     throw new Error("Failed to update note");
+  }
+});
+
+exports.deleteNoteFromDb = asyncHandler(async (req, res) => {
+  const note = await deleteNote(req);
+
+  if (note) {
+    res.status(200).json({
+      success: true,
+      message: "Note deleted successfully",
+      data: note._id,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Failed to delete note");
   }
 });
