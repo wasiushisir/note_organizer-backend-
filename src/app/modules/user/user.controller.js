@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const User = require("../user/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { registerUser, loginUser } = require("./user.service");
@@ -38,6 +39,16 @@ exports.loginUserFromDb = async (req, res) => {
     throw new Error("Invalid credintials");
   }
 };
+
+exports.getMe = asyncHandler(async (req, res) => {
+  const { _id, name, email } = await User.findById(req.user.id);
+
+  res.status(200).json({
+    _id: _id,
+    name: name,
+    email: email,
+  });
+});
 
 const jwtToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_TOKEN, {
