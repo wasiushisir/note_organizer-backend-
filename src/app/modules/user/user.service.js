@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 exports.registerUser = async (data) => {
   const { name, email, password } = data;
   if (!name || !email || !password) {
-    res.status(400);
+    // res.status(400);
     throw new Error("Please add all fields");
   }
 

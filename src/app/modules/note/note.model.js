@@ -16,6 +16,11 @@ const noteSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter a text"],
     },
+
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
   },
   {
     timestamps: true,
