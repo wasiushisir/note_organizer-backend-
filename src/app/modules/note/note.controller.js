@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { createNote, getNote } = require("./note.service");
+const { createNote, getNote, upadateNote } = require("./note.service");
 
 exports.createNoteFromDb = asyncHandler(async (req, res) => {
   // const { ...data } = req.body;
@@ -27,5 +27,23 @@ exports.getNoteFromDb = asyncHandler(async (req, res) => {
       message: "Retrived note successfully",
       data: note,
     });
+  } else {
+    res.status(400);
+    throw new Error("Failed to retrive note");
+  }
+});
+
+exports.updateNoteFromDb = asyncHandler(async (req, res) => {
+  const note = await upadateNote(req);
+
+  if (note) {
+    res.status(200).json({
+      success: true,
+      message: "Updated note successfully",
+      data: note,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Failed to update note");
   }
 });

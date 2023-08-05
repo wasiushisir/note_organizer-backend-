@@ -8,6 +8,6 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/users/", userRoute);
-app.use("/api/note", noteRoute);
+app.use("/api/note/", noteRoute);
 
 module.exports = app;
