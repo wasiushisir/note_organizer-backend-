@@ -35,13 +35,23 @@ exports.getNoteFromDb = asyncHandler(async (req, res) => {
     queries.searchTerm = searchTerm;
   }
 
+  if (req.query.limit) {
+    const limit = req.query.limit;
+    queries.limit = limit;
+  }
+  if (req.query.page) {
+    const page = req.query.page;
+    queries.page = page;
+  }
+
   const note = await getNote(req, queries);
 
   if (note) {
     res.status(200).json({
       success: true,
       message: "Retrived note successfully",
-      data: note,
+      meta: note.meta,
+      data: note.data,
     });
   } else {
     res.status(400);

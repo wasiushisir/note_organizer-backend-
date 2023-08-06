@@ -1,3 +1,4 @@
+const { paginationHelpers } = require("../../../helpers/paginationHelpers");
 const Note = require("../note/note.model");
 const User = require("../user/user.model");
 exports.createNote = async (req) => {
@@ -33,13 +34,22 @@ exports.getNote = async (req, queries) => {
     });
   }
 
+  const { page, limit, skip } = paginationHelpers(queries);
+
   const whereConditions =
     andCondition.length > 0 ? { $and: andCondition } : { user: req.user.id };
 
-  console.log(whereConditions);
-  const note = await Note.find(whereConditions);
+  const note = await Note.find(whereConditions).skip(skip).limit(limit);
 
-  return note;
+  const total = await Note.countDocuments();
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: note,
+  };
 };
 
 exports.upadateNote = async (req) => {
