@@ -17,8 +17,27 @@ exports.createNote = async (req) => {
   return note;
 };
 
-exports.getNote = async (req) => {
-  const note = await Note.find({ user: req.user.id });
+exports.getNote = async (req, queries) => {
+  const andCondition = [];
+  const { category, searchTerm } = queries;
+  if (category) {
+    andCondition.push({ category: category });
+  }
+
+  if (searchTerm) {
+    andCondition.push({
+      title: {
+        $regex: searchTerm,
+        $options: "i",
+      },
+    });
+  }
+
+  const whereConditions =
+    andCondition.length > 0 ? { $and: andCondition } : { user: req.user.id };
+
+  console.log(whereConditions);
+  const note = await Note.find(whereConditions);
 
   return note;
 };

@@ -24,7 +24,18 @@ exports.createNoteFromDb = asyncHandler(async (req, res) => {
 });
 
 exports.getNoteFromDb = asyncHandler(async (req, res) => {
-  const note = await getNote(req);
+  const queries = {};
+  if (req.query.category) {
+    const category = req.query.category;
+    queries.category = category;
+  }
+
+  if (req.query.searchTerm) {
+    const searchTerm = req.query.searchTerm;
+    queries.searchTerm = searchTerm;
+  }
+
+  const note = await getNote(req, queries);
 
   if (note) {
     res.status(200).json({
