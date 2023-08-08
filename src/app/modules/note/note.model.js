@@ -21,6 +21,7 @@ const noteSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
+    fileData: { type: String },
   },
   {
     timestamps: true,

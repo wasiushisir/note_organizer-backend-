@@ -1,8 +1,10 @@
 const { paginationHelpers } = require("../../../helpers/paginationHelpers");
 const Note = require("../note/note.model");
 const User = require("../user/user.model");
+const path = require("path");
 exports.createNote = async (req) => {
   const { title, category, text } = req.body;
+  console.log(req.file, title, category, text);
 
   if (!title || !category || !text) {
     throw new Error("Please add all fields");
@@ -13,6 +15,7 @@ exports.createNote = async (req) => {
     category: req.body.category,
     text: req.body.text,
     user: req.user.id,
+    fileData: req.file ? req.file.path : null,
   });
 
   return note;
@@ -71,9 +74,27 @@ exports.upadateNote = async (req) => {
     throw new Error("user not authorized");
   }
 
-  const updatedNote = await Note.findOneAndUpdate(note._id, req.body, {
-    new: true,
-  });
+  const update = {
+    $set: {
+      fileData: req.file ? req.file.path : null,
+      title: req.body ? req.body.title : null,
+      category: req.body.category,
+      text: req.body.text,
+      user: req.user.id,
+      // ... other fields to update
+    },
+  };
+
+  const updatedNote = await Note.findOneAndUpdate(
+    note._id,
+    update,
+
+    {
+      new: true,
+    }
+  );
+
+  console.log(updatedNote);
 
   return updatedNote;
 };

@@ -33,7 +33,7 @@ exports.registerUser = async (data) => {
 
 exports.loginUser = async (data) => {
   const { email, password } = data;
-  console.log(data);
+  // console.log(data);
 
   // check for user email
 
