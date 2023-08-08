@@ -76,7 +76,7 @@ exports.upadateNote = async (req) => {
 
   const update = {
     $set: {
-      fileData: req.file ? req.file.path : "",
+      fileData: req.file ? req.file.path : null,
       title: req.body ? req.body.title : null,
       category: req.body.category,
       text: req.body.text,
