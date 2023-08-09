@@ -58,7 +58,7 @@ exports.getNote = async (req, queries) => {
 exports.upadateNote = async (req) => {
   const user = await User.find({ user: req.user.id });
   const note = await Note.find({ _id: req.params.id });
-  console.log(note);
+  // console.log(note[0]._id);
   if (!note) {
     res.status(400);
     throw new Error("Note not found");
@@ -77,7 +77,7 @@ exports.upadateNote = async (req) => {
   const update = {
     $set: {
       fileData: req.file ? req.file.path : null,
-      title: req.body ? req.body.title : null,
+      title: req.body.title,
       category: req.body.category,
       text: req.body.text,
       user: req.user.id,
@@ -86,7 +86,7 @@ exports.upadateNote = async (req) => {
   };
 
   const updatedNote = await Note.findOneAndUpdate(
-    note._id,
+    note[0]._id,
     update,
 
     {
@@ -94,7 +94,7 @@ exports.upadateNote = async (req) => {
     }
   );
 
-  console.log(updatedNote);
+  // console.log(updatedNote);
 
   return updatedNote;
 };
