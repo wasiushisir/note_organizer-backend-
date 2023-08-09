@@ -58,7 +58,7 @@ exports.getNote = async (req, queries) => {
 exports.upadateNote = async (req) => {
   const user = await User.find({ user: req.user.id });
   const note = await Note.find({ _id: req.params.id });
-
+  console.log(note);
   if (!note) {
     res.status(400);
     throw new Error("Note not found");
