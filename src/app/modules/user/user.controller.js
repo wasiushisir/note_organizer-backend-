@@ -17,12 +17,12 @@ exports.registerUserFromDb = asyncHandler(async (req, res) => {
       token: jwtToken(user._id),
     });
   } else {
-    res.status(400);
+    res.status(401);
     throw new Error("Invalid user");
   }
 });
 
-exports.loginUserFromDb = async (req, res) => {
+exports.loginUserFromDb = asyncHandler(async (req, res) => {
   const { ...data } = req.body;
   const { email, password } = data;
   const user = await loginUser(data);
@@ -35,10 +35,10 @@ exports.loginUserFromDb = async (req, res) => {
       token: jwtToken(user._id),
     });
   } else {
-    res.status(400);
+    res.status(401);
     throw new Error("Invalid credintials");
   }
-};
+});
 
 exports.getMe = asyncHandler(async (req, res) => {
   const { _id, name, email } = await User.findById(req.user.id);
